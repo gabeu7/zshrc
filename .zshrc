@@ -13,16 +13,25 @@ compinit
 
 #Fashion babey
 #Import colors from wal asynchronously
-(cat ~/.cache/wal/sequences &)
+#(cat ~/.cache/wal/sequences &)
 
 #Import colors
-. "${HOME}/.cache/wal/colors.sh"
+#. "${HOME}/.cache/wal/colors.sh"
 
-#Edit name that shows up on every prompt line
+#Get working branch for github
+autoload -Uz vcs_info
+precmd() { vcs_info }
+zstyle ':vcs_info:git:*' formats 'branch %b'
+
+#Prompt settings
 alias ls='ls --color=auto'
-PS1='%F{green}%n%f@%F{magenta}%m%f %F{blue}%B%~%b%f %# '
 
-alias dmen='dmenu_run -nb "$color0" -nf "$color15" -sb "$color1" -sf "$color15"'
+setopt prompt_subst
+PS1='%F{green}%n%f@%F{magenta}%m%f %F{blue}%B%~%b%f %F{cyan}${vcs_info_msg_0_}%f %# '
+autoload -U promptinit
+promptinit
+
+#alias dmen='dmenu_run -nb "$color0" -nf "$color15" -sb "$color1" -sf "$color15"'
 
 TERM="st-256color"
 SHELL=/bin/zsh
